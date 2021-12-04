@@ -227,10 +227,7 @@ impl Schema {
         match *json {
             Value::Object(ref schema) => {
                 let fields = if let Some(Value::Array(fields)) = schema.get("fields") {
-                    fields
-                        .iter()
-                        .map(|f| Field::from(f))
-                        .collect::<Result<_>>()?
+                    fields.iter().map(Field::from).collect::<Result<_>>()?
                 } else {
                     return Err(ArrowError::ParseError(
                         "Schema fields should be an array".to_string(),
@@ -286,7 +283,7 @@ impl Schema {
         }
     }
 
-    /// Check to see if `self` is a superset of `other` schema. Here are the comparision rules:
+    /// Check to see if `self` is a superset of `other` schema. Here are the comparison rules:
     ///
     /// * `self` and `other` should contain the same number of fields
     /// * for every field `f` in `other`, the field in `self` with corresponding index should be a
